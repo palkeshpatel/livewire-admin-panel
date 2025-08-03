@@ -385,3 +385,4 @@ The admin panel is now complete with all the requested features: **no page reloa
 -   Check Laravel logs: `storage/logs/laravel.log`
 -   Clear application cache: `php artisan cache:clear`
 -   Regenerate autoload: `composer dump-autoload`
+
