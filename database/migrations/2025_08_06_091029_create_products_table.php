@@ -19,8 +19,11 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->longText('description')->nullable();
             $table->decimal('price', 10, 2);
+            $table->decimal('sale_price', 10, 2)->nullable();
             $table->unsignedInteger('stock')->default(0);
             $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->boolean('featured')->default(false);
+            $table->string('sku')->nullable()->unique();
             $table->timestamps();
         });
     }
