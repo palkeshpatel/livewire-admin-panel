@@ -16,6 +16,9 @@
     },
     "dependencies": {
         "@heroicons/vue": "^2.2.0",
-        "alpinejs": "^3.14.9"
+        "@inertiajs/react": "^2.0.17",
+        "alpinejs": "^3.14.9",
+        "react": "^19.1.1",
+        "react-dom": "^19.1.1"
     }
 }

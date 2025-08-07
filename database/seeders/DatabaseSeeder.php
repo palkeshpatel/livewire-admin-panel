@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use App\Models\Category;
+use App\Models\Vendor;
 use App\Models\Product;
 use Illuminate\Support\Facades\Hash;
 
@@ -14,61 +16,102 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create default admin user if it doesn't exist
-        User::firstOrCreate(
-            ['email' => 'admin@example.com'],
-            [
-                'name' => 'Admin User',
-                'password' => Hash::make('password'),
-            ]
-        );
+        // Create admin user
+        User::create([
+            'name' => 'Admin User',
+            'email' => 'admin@example.com',
+            'password' => Hash::make('password'),
+            'role' => 'admin',
+        ]);
 
-        // Create some sample users if they don't exist
-        if (User::count() < 11) {
-            User::factory(10)->create();
+        // Create sample categories
+        $categories = [
+            ['name' => 'Electronics', 'slug' => 'electronics', 'description' => 'Electronic devices and gadgets'],
+            ['name' => 'Clothing', 'slug' => 'clothing', 'description' => 'Fashion and apparel'],
+            ['name' => 'Books', 'slug' => 'books', 'description' => 'Books and publications'],
+            ['name' => 'Home & Garden', 'slug' => 'home-garden', 'description' => 'Home improvement and garden items'],
+        ];
+
+        foreach ($categories as $category) {
+            Category::create($category);
         }
 
-        // Create sample products if they don't exist
-        if (Product::count() === 0) {
-            Product::create([
-                'name' => 'iPhone 15 Pro',
-                'description' => 'Latest iPhone with advanced camera system and A17 Pro chip',
-                'price' => 999.99,
+        // Create sample vendors
+        $vendors = [
+            [
+                'user_id' => User::create([
+                    'name' => 'Tech Store',
+                    'email' => 'tech@example.com',
+                    'password' => Hash::make('password'),
+                    'role' => 'vendor',
+                ])->id,
+                'shop_name' => 'Tech Store',
+                'shop_slug' => 'tech-store',
+                'shop_description' => 'Best electronics store',
+                'status' => 'active',
+            ],
+            [
+                'user_id' => User::create([
+                    'name' => 'Fashion Hub',
+                    'email' => 'fashion@example.com',
+                    'password' => Hash::make('password'),
+                    'role' => 'vendor',
+                ])->id,
+                'shop_name' => 'Fashion Hub',
+                'shop_slug' => 'fashion-hub',
+                'shop_description' => 'Trendy fashion store',
+                'status' => 'active',
+            ],
+        ];
+
+        foreach ($vendors as $vendor) {
+            Vendor::create($vendor);
+        }
+
+        // Create sample products
+        $products = [
+            [
+                'vendor_id' => 1,
+                'category_id' => 1,
+                'name' => 'Smartphone',
+                'slug' => 'smartphone',
+                'description' => 'Latest smartphone with amazing features',
+                'price' => 29999.00,
+                'sale_price' => 24999.00,
                 'stock' => 50,
-                'status' => 'active'
-            ]);
-
-            Product::create([
-                'name' => 'MacBook Air M2',
-                'description' => 'Ultra-thin laptop with M2 chip for incredible performance',
-                'price' => 1199.99,
+                'status' => 'active',
+                'featured' => true,
+                'sku' => 'PHONE001',
+            ],
+            [
+                'vendor_id' => 1,
+                'category_id' => 1,
+                'name' => 'Laptop',
+                'slug' => 'laptop',
+                'description' => 'High-performance laptop for work and gaming',
+                'price' => 59999.00,
                 'stock' => 25,
-                'status' => 'active'
-            ]);
-
-            Product::create([
-                'name' => 'AirPods Pro',
-                'description' => 'Wireless earbuds with active noise cancellation',
-                'price' => 249.99,
+                'status' => 'active',
+                'featured' => true,
+                'sku' => 'LAPTOP001',
+            ],
+            [
+                'vendor_id' => 2,
+                'category_id' => 2,
+                'name' => 'T-Shirt',
+                'slug' => 't-shirt',
+                'description' => 'Comfortable cotton t-shirt',
+                'price' => 999.00,
+                'sale_price' => 799.00,
                 'stock' => 100,
-                'status' => 'active'
-            ]);
+                'status' => 'active',
+                'featured' => false,
+                'sku' => 'TSHIRT001',
+            ],
+        ];
 
-            Product::create([
-                'name' => 'iPad Air',
-                'description' => 'Powerful tablet with M1 chip and stunning display',
-                'price' => 599.99,
-                'stock' => 30,
-                'status' => 'active'
-            ]);
-
-            Product::create([
-                'name' => 'Apple Watch Series 9',
-                'description' => 'Advanced health monitoring and fitness tracking',
-                'price' => 399.99,
-                'stock' => 75,
-                'status' => 'active'
-            ]);
+        foreach ($products as $product) {
+            Product::create($product);
         }
     }
 }
